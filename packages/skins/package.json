@@ -1,0 +1,15 @@
+{
+  "name": "xw3-skins",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "Xircus",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@chakra-ui/react": "^2.5.1",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "framer-motion": "^10.2.3",
+    "react-icons": "^4.8.0"
+  }
+}

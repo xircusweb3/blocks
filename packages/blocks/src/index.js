@@ -1,5 +1,5 @@
 // Layouts
-export * from './layout/LayoutStack'
+export * from './layout/StackLayout'
 
 // Headers
 export * from './header/AppHeader'
