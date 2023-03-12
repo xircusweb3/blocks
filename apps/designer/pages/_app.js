@@ -32,8 +32,9 @@ const APP_STATE = {
     isGuarded: false,
   },
   locales: {
-    en: {},
-    zh: {}
+    en: { '/': { welcome: 'Welcome' } },
+    zh: { '/': { welcome: '欢迎' } },
+    ar: { '/': { welcome: 'مرحباً' } }
   },
   layouts: {
 
@@ -70,7 +71,7 @@ function MyApp({ pageProps, router }) {
   switch(router.query.mode) {
     case 'block':
       return (
-        <BlockProvider app={app}>
+        <BlockProvider app={app} router={router}>
           <LayoutManager />
         </BlockProvider>
       )

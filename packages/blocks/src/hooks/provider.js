@@ -5,21 +5,52 @@ import { XircusProvider } from '@xircus-web3/react'
 
 export const BlockContext = createContext()
 
-const DEFAULT_THEME = extendTheme({
+const DEFAULT_THEME = {
   config: {
+    cssVarPrefix: 'xw3',
     initialColorMode: 'dark',
     useSystemColorMode: false
+  },
+  semanticTokens: {
+    colors: {
+      card: {
+        default: 'gray.50',
+        _dark: 'gray.800',
+      },
+      'chakra-body-bg': {
+        default: 'white',
+        _dark: 'gray.900'
+      }
+    }
   }
-})
+}
 
 export const BlockProvider = ({ app, children, router }) => {
+  const page = router?.query?.page || '/'
+  const locale = router?.query?.locale || 'en'
+  const messages = app?.locales[locale] || {}
+  const dir = locale == 'ar' ? 'rtl' : 'ltr'
+
+  console.log("MESSAGES", messages)
+
   const [chain, setChain] = useState(1)
-  const [locale, setLocale] = useState(router?.locale || 'en')
+//  const [locale, setLocale] = useState(router?.locale || 'en')
   const [layout, setLayout] = useState(app?.layout || {})
-  const [messages, setMessages] = useState({})
+//  const [messages, setMessages] = useState({})
+  const [semantics, setSemantics] = useState({})
   const [theme, setTheme] = useState(DEFAULT_THEME)
   const [pages, setPages] = useState(app?.pages || {})
   const [edit, setEdit] = useState(false)
+  const themer = extendTheme(theme)
+
+  console.log("THEMER", themer)
+
+  const updateTheme = (newTheme) => {
+    setTheme({ 
+      ...theme, 
+      ...newTheme
+    })
+  }
 
   const toggleEdit = () => setEdit(!edit)
   
@@ -62,6 +93,8 @@ export const BlockProvider = ({ app, children, router }) => {
   }
 
   const ctx = useMemo(() => ({
+    page,
+    dir,
     app,
     layout, 
     edit,
@@ -72,8 +105,11 @@ export const BlockProvider = ({ app, children, router }) => {
     updateBlock,
     removeBlock,
     toggleEdit,
-    changeVariant
+    changeVariant,
+    updateTheme
   }), [
+    page,
+    dir,
     app, 
     layout, 
     saveLayout, 
@@ -84,12 +120,13 @@ export const BlockProvider = ({ app, children, router }) => {
     updateBlock,
     toggleEdit,
     changeVariant,
+    updateTheme
   ])
 
   return (
     <IntlProvider messages={messages} locale={locale}>
       <XircusProvider initApp={app} desiredChain={chain} autoAuth={true} autoConnect={true}>
-        <ChakraProvider theme={theme}>
+        <ChakraProvider theme={themer}>
           <BlockContext.Provider value={ctx}>
             {children}
           </BlockContext.Provider>

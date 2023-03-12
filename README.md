@@ -12,7 +12,10 @@ Xircus creates two(2) application tools to help web3 enthusiasts and developers 
 |**Composer**   |Compose pages using block editor (inspired by Notion and Gitbook)                    |
 |**Designer**   |Customize overall theme of pre-built pages of skins (inspired by Wordpress Shopify)  |
 
-
+## Features
+- Internationalization
+- RTL Support
+- Chakra Theming
 
 ## Component Blocks
 

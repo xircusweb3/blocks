@@ -12,6 +12,8 @@ export const AppLayout = () => {
   const wallet = useWallet()
   const { app, layout } = useBlock()
 
+
+  
   return (
     <Box>
       App Layout 
