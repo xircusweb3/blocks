@@ -60,6 +60,17 @@ const APP_STATE = {
 
 }
 
+const ChildWithProps = props => {
+
+  console.log("RPOPSDFSD", props)
+
+  return (
+    <Box>
+      Propsssss
+    </Box>
+  )
+}
+
 function MyApp({ pageProps, router }) {
   const [app, setApp] = useState(APP_STATE)
   // Switch between block editor or skiner
@@ -72,7 +83,9 @@ function MyApp({ pageProps, router }) {
     case 'block':
       return (
         <BlockProvider app={app} router={router}>
-          <LayoutManager />
+          <LayoutManager>
+            <ChildWithProps />
+          </LayoutManager>
         </BlockProvider>
       )
     case 'skin': 

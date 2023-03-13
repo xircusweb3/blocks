@@ -1,18 +1,22 @@
 export const NFT_GENERAL = {
-  symbols: {},
-  theme: {
-    header: {},
-    left: {},
-    right: {},
-    footer: {},
-    main: {}
+  layout: {
+    variant: 'StackLayout',
+    theme: {
+
+    },
+    header: [],
+    main: [],
   },
-  fonts: {},
-  layout: 'LayoutStack',
-  header: [],
-  footer: [],
-  main: [],
-  guard: [],
-  isGuarded: false,
-  openGuard: 'NFTGated'
+  locales: {
+    
+  },
+  metas: {
+
+  },
+  fonts: {
+
+  },
+  categories: {
+
+  },
 }

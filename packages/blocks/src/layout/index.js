@@ -1,26 +1,26 @@
 import { useMemo } from 'react'
-import { Box, Button, Heading, HStack, useColorMode } from "@chakra-ui/react"
+import { Box, Button, HStack, useColorMode } from "@chakra-ui/react"
 import { useBlock } from "../hooks/provider"
 import { AppLayout } from "./AppLayout"
 import { StackLayout } from './StackLayout'
-import { useTranslations } from 'use-intl'
+import LayoutEditor from '../editor/LayoutEditor'
+import AppTabLayout from './AppTabLayout'
 
-export const LayoutManager = () => {
+export const LayoutManager = ({ children }) => {
   const { toggleColorMode } = useColorMode()
-  const { layout, edit, toggleEdit, changeVariant, page, dir } = useBlock()
-  const t = useTranslations(page)
+  const { layout, edit, toggleEdit, changeVariant } = useBlock()
 
   const renderLayout = useMemo(() => {
     switch(layout.variant) {
       case 'AppLayout': return <AppLayout />
+      case 'AppTabLayout': return <AppTabLayout />
       case 'StackLayout': return <StackLayout />
     }
   }, [layout.variant])
 
   const renderEdit = useMemo(() => {
     return (
-      <Box bg="card">
-        <Heading textAlign={dir == 'rtl' ? 'right' : 'left'}>{t('welcome')}</Heading>
+      <Box>
         <Button onClick={toggleColorMode}>Toggle</Button>
         <Button onClick={toggleEdit}>{edit ? 'Save' : 'Edit'}</Button>
         {
@@ -35,10 +35,22 @@ export const LayoutManager = () => {
     )
   }, [toggleEdit, changeVariant, toggleColorMode])
 
+  const renderChildren = useMemo(() => {
+    if (typeof children == 'function') {
+      // pass some data
+      return children({ test: '' })
+    }
+    if (typeof children == 'object') {
+      return children
+    }
+  }, [children])
+
   return (
     <Box>
       {renderLayout}
       {renderEdit}
+      <LayoutEditor />
+      {renderChildren}
     </Box>
   )
 }

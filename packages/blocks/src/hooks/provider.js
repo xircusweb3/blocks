@@ -31,7 +31,7 @@ export const BlockProvider = ({ app, children, router }) => {
   const messages = app?.locales[locale] || {}
   const dir = locale == 'ar' ? 'rtl' : 'ltr'
 
-  console.log("MESSAGES", messages)
+  console.log("MESSAGES", messages, router)
 
   const [chain, setChain] = useState(1)
 //  const [locale, setLocale] = useState(router?.locale || 'en')
@@ -64,6 +64,10 @@ export const BlockProvider = ({ app, children, router }) => {
 
   const removePage = () => {
 
+  }
+
+  const changePage = (page = '/') => {
+    router.push('/', { ...router.query, page })
   }
 
   const saveLayout = () => {
