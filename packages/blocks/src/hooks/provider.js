@@ -1,5 +1,5 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import { createContext, useMemo, useState, useContext } from 'react'
+import { createContext, useMemo, useState, useContext, useEffect } from 'react'
 import { IntlProvider } from 'use-intl'
 import { XircusProvider } from '@xircus-web3/react'
 
@@ -42,8 +42,14 @@ export const BlockProvider = ({ app, children, router }) => {
   const [pages, setPages] = useState(app?.pages || {})
   const [edit, setEdit] = useState(false)
   const themer = extendTheme(theme)
+  const [components, setComponents] = useState({})
+  const [defaults, setDefaults] = useState({})
 
   console.log("THEMER", themer)
+
+  useEffect(() => {
+    console.log("LAYOUT CHANGESSSSSS", layout)
+  }, [layout])
 
   const updateTheme = (newTheme) => {
     setTheme({ 
@@ -72,6 +78,10 @@ export const BlockProvider = ({ app, children, router }) => {
 
   const saveLayout = () => {
 
+  }
+
+  const setBlocks = (name, blocks) => {
+    setLayout({ ...layout, [name]: blocks })
   }
 
   const changeVariant = (variant) => setLayout({ ...layout, variant })
@@ -103,11 +113,7 @@ export const BlockProvider = ({ app, children, router }) => {
     layout, 
     edit,
     saveLayout,
-    getLayout,
-    removeLayout,
-    addBlock,
-    updateBlock,
-    removeBlock,
+    setBlocks,
     toggleEdit,
     changeVariant,
     updateTheme
@@ -116,12 +122,8 @@ export const BlockProvider = ({ app, children, router }) => {
     dir,
     app, 
     layout, 
-    saveLayout, 
-    getLayout, 
-    removeLayout,
-    removeBlock, 
-    addBlock, 
-    updateBlock,
+    saveLayout,
+    setBlocks,
     toggleEdit,
     changeVariant,
     updateTheme

@@ -1,6 +1,8 @@
+import { useMemo } from 'react'
 import { Box, Button, Heading } from "@chakra-ui/react"
 import { useBlock } from "../hooks/provider"
-import { useWallet } from '@xircus-web3/react'
+import BlockRenderer from "../renderer/BlockRenderer"
+import { mainComponents } from "../blocks"
 
 export const AppLayoutDefault = {
   name: 'AppLayout',
@@ -9,23 +11,18 @@ export const AppLayoutDefault = {
 }
 
 export const AppLayout = () => {
-  const wallet = useWallet()
-  const { app, layout } = useBlock()
+  const { layout } = useBlock()
 
+  const renderMain = useMemo(() => {
+    return <BlockRenderer name="main"
+      blocks={layout.main || []} 
+      components={mainComponents}
+      />
+  }, [layout.main])
 
-  
   return (
     <Box>
-      App Layout 
-      <Heading>
-      {app.name}
-      </Heading>
-      <Box>
-      {wallet.account}
-      </Box>
-      <Button onClick={wallet.connectMetamask}>Connect</Button>
-      <Button onClick={wallet.connectWalletConnect}>Wallet Connect</Button>      
-      <Button onClick={wallet.disconnect}>Disconnect</Button>
+    { renderMain }
     </Box>
   )
 }

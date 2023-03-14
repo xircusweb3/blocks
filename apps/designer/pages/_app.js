@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react'
 import { SkinProvider } from '@xircus-web3/skinner'
-import { BlockProvider, LayoutManager } from '@xircus-web3/blocks'
+import { BlockProvider, LayoutManager, MarqueeDefault } from '@xircus-web3/blocks'
 import { useState } from 'react'
 
 const APP_STATE = {
@@ -29,6 +29,10 @@ const APP_STATE = {
     left: [],
     right: [],
     guard: [],
+    main: [
+      { key: 'mid1', name: 'Marquee', theme: {}, data: { text: 'First Block' } },
+      { key: 'mid2', name: 'Marquee', theme: {}, data: { text: 'Second Block' } },      
+    ],
     isGuarded: false,
   },
   locales: {
@@ -73,13 +77,14 @@ const ChildWithProps = props => {
 
 function MyApp({ pageProps, router }) {
   const [app, setApp] = useState(APP_STATE)
+  const mode = router.query.mode || 'block'
   // Switch between block editor or skiner
 
   const handleLoadApp = () => {
 
   }
 
-  switch(router.query.mode) {
+  switch(mode) {
     case 'block':
       return (
         <BlockProvider app={app} router={router}>

@@ -31,7 +31,11 @@ export const LayoutEditor = () => {
   const renderEditModals = useMemo(() => {
     return (
       <Fragment>
-        <RightDrawer size="sm" isOpen={modal.locale} onClose={() => handleClose('locale')}>
+        <RightDrawer 
+          header="Locale"
+          size="sm"
+          isOpen={modal.locale}
+          onClose={() => handleClose('locale')}>
           <ThemeEditor />
         </RightDrawer>
         <RightDrawer size="sm" isOpen={modal.variant} onClose={() => handleClose('variant')}>

@@ -5,6 +5,7 @@ import { AppLayout } from "./AppLayout"
 import { StackLayout } from './StackLayout'
 import LayoutEditor from '../editor/LayoutEditor'
 import AppTabLayout from './AppTabLayout'
+import SlideLayout from './SlideLayout'
 
 export const LayoutManager = ({ children }) => {
   const { toggleColorMode } = useColorMode()
@@ -15,29 +16,12 @@ export const LayoutManager = ({ children }) => {
       case 'AppLayout': return <AppLayout />
       case 'AppTabLayout': return <AppTabLayout />
       case 'StackLayout': return <StackLayout />
+      case 'SlideLayout': return <SlideLayout />
     }
   }, [layout.variant])
 
-  const renderEdit = useMemo(() => {
-    return (
-      <Box>
-        <Button onClick={toggleColorMode}>Toggle</Button>
-        <Button onClick={toggleEdit}>{edit ? 'Save' : 'Edit'}</Button>
-        {
-          edit && (
-            <HStack>
-              <Button onClick={() => changeVariant('AppLayout')}>AppLayout</Button>
-              <Button onClick={() => changeVariant('StackLayout')}>StackLayout</Button>
-            </HStack>
-          )
-        }
-      </Box>
-    )
-  }, [toggleEdit, changeVariant, toggleColorMode])
-
   const renderChildren = useMemo(() => {
     if (typeof children == 'function') {
-      // pass some data
       return children({ test: '' })
     }
     if (typeof children == 'object') {
@@ -47,10 +31,9 @@ export const LayoutManager = ({ children }) => {
 
   return (
     <Box>
-      {renderLayout}
-      {renderEdit}
-      <LayoutEditor />
       {renderChildren}
+      {renderLayout}
+      <LayoutEditor />
     </Box>
   )
 }

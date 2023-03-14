@@ -8,8 +8,14 @@ export default function AppTabLayout() {
   const tabs = [
     {
       key: 'tab1',
-      label: 'Home'
-    }
+      label: 'Home',
+      content: 'Tab1'
+    },
+    {
+      key: 'tab2',
+      label: 'Another',
+      content: 'Tab2'
+    }    
   ]
 
   return (
