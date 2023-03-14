@@ -30,8 +30,8 @@ const APP_STATE = {
     right: [],
     guard: [],
     main: [
-      { key: 'mid1', name: 'Marquee', theme: {}, data: { text: 'First Block' } },
-      { key: 'mid2', name: 'Marquee', theme: {}, data: { text: 'Second Block' } },      
+      { key: 'mid1', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'First Block' } },
+      { key: 'mid2', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'Second Block' } },      
     ],
     isGuarded: false,
   },
@@ -64,17 +64,6 @@ const APP_STATE = {
 
 }
 
-const ChildWithProps = props => {
-
-  console.log("RPOPSDFSD", props)
-
-  return (
-    <Box>
-      Propsssss
-    </Box>
-  )
-}
-
 function MyApp({ pageProps, router }) {
   const [app, setApp] = useState(APP_STATE)
   const mode = router.query.mode || 'block'
@@ -88,9 +77,7 @@ function MyApp({ pageProps, router }) {
     case 'block':
       return (
         <BlockProvider app={app} router={router}>
-          <LayoutManager>
-            <ChildWithProps />
-          </LayoutManager>
+          <LayoutManager />
         </BlockProvider>
       )
     case 'skin': 

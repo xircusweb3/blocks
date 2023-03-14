@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 import { TbArrowDown, TbArrowUp, TbSettings, TbPlus, TbSun, TbTrash, TbChevronsDown, TbChevronsUp, TbSortAscending, TbSortDescending, TbSortDescending2 } from "react-icons/tb"
 import { motion } from "framer-motion"
 import { useBlock } from '../hooks/provider'
+import BlockOptions from "./BlockOptions"
 
 Array.prototype.move = function(from, to) {
   return this.splice(to, 0, this.splice(from, 1)[0])
@@ -15,26 +16,15 @@ const swipePower = (offset, velocity) => {
   return Math.abs(offset) * velocity
 }
 
-const InAdd = () => (
-  <Box pos="relative">
-    <HStack _hover={{ opacity: 1 }} opacity="0">
-      <Divider />
-      <IconButton size="xs" rounded="full" icon={<TbPlus />} />
-      <Divider />
-    </HStack>  
-  </Box>
-)
-
-export default function BlockRenderer({ name, blocks = [], components = {} }) {
+export default function BlockRenderer({ group = 'main', blocks = [], components = {} }) {
   const { edit, setBlocks } = useBlock()
   const [items, setItems] = useState(blocks)
   const [history, setHistory] = useState([])
   const [counter, setCounter] = useState(0)
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
     if (!edit) {
-      setBlocks(name, blocks)
+      setBlocks(group, items)
     }
   }, [edit])
 
@@ -65,7 +55,7 @@ export default function BlockRenderer({ name, blocks = [], components = {} }) {
     let newItems = items
     newItems.push({ ...item, key: createKey() })
     setItems(newItems)
-    updateAndPushHistory()    
+    updateAndPushHistory()
   }
 
   const onRemove = (blockIndex) => {
@@ -75,7 +65,8 @@ export default function BlockRenderer({ name, blocks = [], components = {} }) {
     updateAndPushHistory()
   }
 
-  const onSave = (blockIndex, item) => {
+  const onChange = (blockIndex, item) => {
+    console.log("BLOCK ITEMS", blockIndex, item)
     let newItems = items
     newItems[blockIndex] = item
     setItems(newItems)
@@ -89,7 +80,7 @@ export default function BlockRenderer({ name, blocks = [], components = {} }) {
     } else if (swipe > swipeConfidenceThreshold) {
       onMoveDown(blockIndex)
     }
-  }  
+  }
 
   const renderBlocks = useMemo(() => {
     if (edit) {
@@ -108,21 +99,16 @@ export default function BlockRenderer({ name, blocks = [], components = {} }) {
               <HStack pos="absolute" top="50%" left="50%" zIndex={1399} display="none" _groupHover={{ display: 'block' }}>
                 <Spacer />
                 <ButtonGroup size="xs" isAttached>
-                  <Tooltip label="Add Block Before">
-                    <IconButton onClick={() => onMoveDown(blockIndex)} icon={<TbSortAscending />} rounded="full" size="xs" />
-                  </Tooltip>
-                  <Tooltip label="Add Block After">
-                    <IconButton onClick={() => onMoveDown(blockIndex)} icon={<TbSortDescending />} rounded="full" size="xs" />              
-                  </Tooltip>
                   <IconButton onClick={() => onMoveDown(blockIndex)} icon={<TbChevronsDown />} />
                   <IconButton onClick={() => onMoveUp(blockIndex)} icon={<TbChevronsUp />} />
-                  <IconButton onClick={() => onRemove(blockIndex)} icon={<TbTrash />} />                
+                  <IconButton onClick={() => onRemove(blockIndex)} icon={<TbTrash />} />
                 </ButtonGroup>
               </HStack>
               <BlockComponent
                 block={block}
+                group={group}
                 blockIndex={blockIndex}
-                onSave={onSave}
+                onChange={onChange}
               />
             </Box>
           </Box>
@@ -141,10 +127,11 @@ export default function BlockRenderer({ name, blocks = [], components = {} }) {
         : null
     })
 
-  }, [edit, items, components, onSave])
+  }, [edit, group, items, components, onChange])
 
   return (
     <>
+      <BlockOptions />
       {renderBlocks}
     </>
   )

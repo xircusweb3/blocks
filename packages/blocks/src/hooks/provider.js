@@ -31,7 +31,7 @@ export const BlockProvider = ({ app, children, router }) => {
   const messages = app?.locales[locale] || {}
   const dir = locale == 'ar' ? 'rtl' : 'ltr'
 
-  console.log("MESSAGES", messages, router)
+  // console.log("MESSAGES", messages, router)
 
   const [chain, setChain] = useState(1)
 //  const [locale, setLocale] = useState(router?.locale || 'en')
@@ -45,11 +45,10 @@ export const BlockProvider = ({ app, children, router }) => {
   const [components, setComponents] = useState({})
   const [defaults, setDefaults] = useState({})
 
-  console.log("THEMER", themer)
-
-  useEffect(() => {
-    console.log("LAYOUT CHANGESSSSSS", layout)
-  }, [layout])
+  // console.log("THEMER", themer)
+  // useEffect(() => {
+  //   console.log("LAYOUT CHANGESSSSSS", layout)
+  // }, [layout])
 
   const updateTheme = (newTheme) => {
     setTheme({ 
@@ -80,8 +79,8 @@ export const BlockProvider = ({ app, children, router }) => {
 
   }
 
-  const setBlocks = (name, blocks) => {
-    setLayout({ ...layout, [name]: blocks })
+  const setBlocks = (group, blocks) => {
+    setLayout({ ...layout, [group]: blocks })
   }
 
   const changeVariant = (variant) => setLayout({ ...layout, variant })
@@ -145,4 +144,61 @@ export const BlockProvider = ({ app, children, router }) => {
 export const useBlock = () => {
   const ctx = useContext(BlockContext)
   return ctx
+}
+
+// Block Renderer Hook
+export const useBlocks = ({ group = 'main', blocks = [], components = [] }) => {
+  const [items, setItems] = useState(blocks || [])
+
+  const onSave = (blockIndex, item) => {
+    let newItems = items
+    newItems[blockIndex] = item
+    setItems(newItems)
+  }
+
+  return {
+    items,
+    setItems,
+    onSave
+  }
+}
+
+// Block Item Hook for Theme and Data
+export const useBlockItem = ({ group = 'main', block = {}, blockIndex = 0, onChange }) => {
+  const [theme, setTheme] = useState(block?.theme)
+  const [data, setData] = useState(block?.data)
+
+  const onClose = () => {
+    onChange && onChange(blockIndex, { ...block, theme, data })
+  }
+
+  const updateTheme = (name, values) => {
+    setTheme({ ...theme, [name]: values })
+  }
+
+  const handleData = (name, value) => {
+    setData({ ...data, [name]: value })
+  }
+
+  const handleInput = ({ target: { name, value } }) => {
+    if (name) {
+      setData({ ...data, [name]: value })
+    }
+  }
+
+  return {
+    theme,
+    data,
+    setTheme,
+    setData,
+    handleData,
+    handleInput,
+    getEditorActions: {
+      block,
+      theme,
+      setTheme,
+      updateTheme,
+      onClose
+    }
+  }
 }

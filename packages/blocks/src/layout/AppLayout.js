@@ -14,15 +14,16 @@ export const AppLayout = () => {
   const { layout } = useBlock()
 
   const renderMain = useMemo(() => {
-    return <BlockRenderer name="main"
-      blocks={layout.main || []} 
-      components={mainComponents}
-      />
+    return <BlockRenderer 
+            group="main"
+            blocks={layout.main || []} 
+            components={mainComponents}
+            />
   }, [layout.main])
 
   return (
-    <Box>
-    { renderMain }
-    </Box>
+    <>
+      {renderMain}
+    </>
   )
 }
