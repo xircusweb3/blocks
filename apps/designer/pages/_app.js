@@ -1,7 +1,11 @@
-import { Box } from '@chakra-ui/react'
 import { SkinProvider } from '@xircus-web3/skinner'
-import { BlockProvider, LayoutManager, MarqueeDefault } from '@xircus-web3/blocks'
+import { BlockProvider, Fonts, LayoutManager, HeadManager } from '@xircus-web3/composer'
 import { useState } from 'react'
+import Head from 'next/head'
+
+export function reportWebVitals(metric) {
+  console.log(metric)
+}
 
 const APP_STATE = {
   // mode: 'skin',
@@ -12,7 +16,13 @@ const APP_STATE = {
 
   },
   pages: {
-    '/': [],
+    '/': [
+      { key: 'mid1', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'Xircus made this marquee text customizable so you can always broadcase your message to your users' } },
+      { key: 'mid2', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'Second Block' } },      
+    ],
+    '/test': [
+      { key: 'midx', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'Test Block' } },
+    ],
   },
   layout: {
     variant: 'AppLayout',
@@ -29,10 +39,7 @@ const APP_STATE = {
     left: [],
     right: [],
     guard: [],
-    main: [
-      { key: 'mid1', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'First Block' } },
-      { key: 'mid2', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'Second Block' } },      
-    ],
+    main: [],
     isGuarded: false,
   },
   locales: {
@@ -76,7 +83,11 @@ function MyApp({ pageProps, router }) {
   switch(mode) {
     case 'block':
       return (
-        <BlockProvider app={app} router={router}>
+        <BlockProvider
+          app={app}
+          onRefresh={handleLoadApp}
+          router={router}>
+          <HeadManager Head={Head} />
           <LayoutManager />
         </BlockProvider>
       )
@@ -86,7 +97,7 @@ function MyApp({ pageProps, router }) {
           skin="MarketGeneral"
           router={router}
           app={app}
-          onLoadApp={handleLoadApp}
+          onRefresh={handleLoadApp}
           pageProps={pageProps}
           />
       )

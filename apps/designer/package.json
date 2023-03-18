@@ -18,7 +18,8 @@
     "react-dom": "18.2.0",
     "use-intl": "^2.11.0",
     "@xircus-web3/skinner": "*",
-    "@xircus-web3/blocks": "*"
+    "@xircus-web3/blocks": "*",
+    "@xircus-web3/composer": "*"    
   },
   "devDependencies": {
     "eslint": "8.36.0",

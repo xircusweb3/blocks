@@ -1,5 +1,5 @@
 {
-  "name": "@xircus-web3/blocks",
+  "name": "@xircus-web3/blocks-copy",
   "version": "1.0.0",
   "type": "module",
   "main": "src/index.js",

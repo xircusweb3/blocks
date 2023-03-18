@@ -1,0 +1,1 @@
+export const createKey = (length = 10) => (Math.random() + 1).toString(36).substring(length)
