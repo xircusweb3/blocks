@@ -34,7 +34,7 @@ const VariantSelector = ({ ...rest }) => {
 }
 export const LayoutEditor = () => {
   const { toggleColorMode, colorMode } = useColorMode()
-  const { layout, edit, toggleEdit, changeVariant, page, setPage } = useBlock()
+  const { layout, edit, toggleEdit, page, setPage } = useBlock()
   const [modal, setModal] = useState({ locale: false, variant: false })
   const [panel, setPanel] = useState({ variants: false })
   const [mini, setMini] = useState(false)
@@ -42,7 +42,6 @@ export const LayoutEditor = () => {
   const toggleMini = () => setMini(!mini)
   const handleOpen = (name) => setModal({ ...modal, [name]: true })
   const handleClose = (name) => setModal({ ...modal, [name]: false })
-  const togglePanel = (name) => setPanel({ ...panel, [name]: !panel[name] })
 
   const renderEditModals = useMemo(() => {
     return (

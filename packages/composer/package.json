@@ -1,11 +1,8 @@
 {
   "name": "@xircus-web3/composer",
   "version": "1.0.0",
-  "type": "module",
   "main": "src/index.js",
-  "author": "Xircus",
-  "license": "MIT",
-  "private": true,
+  "license": "Apache 2.0",
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",

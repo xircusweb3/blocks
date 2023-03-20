@@ -1,19 +1,23 @@
 import { SkinProvider } from '@xircus-web3/skinner'
-import { BlockProvider, Fonts, LayoutManager, HeadManager } from '@xircus-web3/composer'
+import { BlockProvider, LayoutManager, HeadManager } from '@xircus-web3/composer'
 import { useState } from 'react'
 import Head from 'next/head'
+import { Box } from '@chakra-ui/react'
+import dynamic from 'next/dynamic'
 
-export function reportWebVitals(metric) {
-  console.log(metric)
-}
+// export function reportWebVitals(metric) {
+//   console.log(metric)
+// }
 
 const APP_STATE = {
-  // mode: 'skin',
   name: 'Shiba',
   url: 'shiba',
-  mode: 'block',
+  scaffold: 'block',
   theme: {
-
+    config: {
+      initialColorMode: 'dark',
+      useSystemColorMode: false      
+    },
   },
   pages: {
     '/': [
@@ -47,9 +51,6 @@ const APP_STATE = {
     zh: { '/': { welcome: '欢迎' } },
     ar: { '/': { welcome: 'مرحباً' } }
   },
-  layouts: {
-
-  },
   fonts: [
     { name: 'Montserrat', url: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;500;700&display=swap' },
     { name: 'Roboto', url: 'https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500;700&display=swap' },   
@@ -68,24 +69,19 @@ const APP_STATE = {
     { name: 'og:description', content: '' },
     { name: 'og:image', content: '' },    
   ],
-
 }
 
 function MyApp({ pageProps, router }) {
   const [app, setApp] = useState(APP_STATE)
-  const mode = router.query.mode || 'block'
+  const scaffold = router.query.scaffold || 'skin'
   // Switch between block editor or skiner
-
-  const handleLoadApp = () => {
-
-  }
-
-  switch(mode) {
+  
+  switch(scaffold) {
     case 'block':
       return (
         <BlockProvider
           app={app}
-          onRefresh={handleLoadApp}
+          head={Head}
           router={router}>
           <HeadManager Head={Head} />
           <LayoutManager />
@@ -94,14 +90,18 @@ function MyApp({ pageProps, router }) {
     case 'skin': 
       return (
         <SkinProvider 
+          pageProps={pageProps}
           skin="MarketGeneral"
+          loader={dynamic}
           router={router}
           app={app}
-          onRefresh={handleLoadApp}
-          pageProps={pageProps}
+          head={Head}
           />
       )
-
+    default: 
+      return (
+        <Box>Unknown Scaffold</Box>
+      )
   }
 }
 
