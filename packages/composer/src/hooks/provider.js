@@ -25,7 +25,9 @@ const DEFAULT_THEME = {
   }
 }
 
-export const BlockProvider = ({ app, children, router }) => {
+const EDITOR_PAGE = '/editor'
+
+export const BlockProvider = ({ app, children, head, router }) => {
   const [chain, setChain] = useState(1)
   const [locale, setLocale] = useState(router?.query?.locale || router.locale)
   const [locales, setLocales] = useState(app?.locales || {})
@@ -33,50 +35,36 @@ export const BlockProvider = ({ app, children, router }) => {
   const [fonts, setFonts] = useState(app?.fonts || [])
   const [metas, setMetas] = useState(app?.metas || [])
   const [theme, setTheme] = useState(DEFAULT_THEME)
-  const [page, setPage] = useState(router?.query?.page || router.route)
-  const [pages, setPages] = useState(app?.pages || {})
   const [edit, setEdit] = useState(false)
+  const [page, setPage] = useState(router.route == EDITOR_PAGE ? router?.query?.page : router.route)
+  const [pages, setPages] = useState(app?.pages || {})
   const themer = extendTheme(theme)
-  const blocks = useMemo(() => pages[page], [page])
+  const blocks = useMemo(() => pages[page], [page, pages, app])
   const messages = locales[locale] || {}
   const dir = locale == 'ar' ? 'rtl' : 'ltr'
 
-  console.log("ROUTER", router)
-
-  const [components, setComponents] = useState({})
-  const [defaults, setDefaults] = useState({})
-  const [semantics, setSemantics] = useState({})
-
   const addFont = (name, url) => setFonts({ ...fonts, [name]: url })
   const removeFont = (name) => setFonts(fonts.filter(f => f.name != name))
-  const updateTheme = (newTheme) => setTheme({ ...theme, ...newTheme })
+  const updateUITheme = (newTheme) => setTheme({ ...theme, ...newTheme })
   const toggleEdit = () => setEdit(!edit)
-  const setBlocks = (group, blocks) => setLayout({ ...layout, [group]: blocks })
-  const setPageBlocks = (blocks) => setPages({ ...pages, [page]: blocks })
+
+
   const changeVariant = (variant) => setLayout({ ...layout, variant })
+  const updateTheme = (name, themeConfig) => setLayout({ ...layout, theme: { ...layout?.theme, [name]: themeConfig } })
 
-  const getLayout = () => {
-
+  const setBlocks = (group, blocks) => {
+    console.log("UPDATING BLOCKS", group, blocks)
+    setLayout({ ...layout, [group]: blocks })
   }
 
-  const removeLayout = () => {
-
-  }
-
-  const removeBlock = () => {
-
-  }
-
-  const addBlock = () => {
-
-  }
-
-  const updateBlock = () => {
-
+  const setPageBlocks = (page, blocks) => {
+    console.log("NEWLY UPDATED PAGE BLOCKS", page, blocks)
+    setPages({ ...pages, [page]: blocks.filter(b => b != null) })
   }
 
   const ctx = useMemo(() => ({
     page,
+    pages,
     dir,
     app,
     layout,
@@ -87,13 +75,16 @@ export const BlockProvider = ({ app, children, router }) => {
     toggleEdit,
     changeVariant,
     updateTheme,
+    updateUITheme,
     setPage,
     fonts,
     addFont,
     removeFont,
     metas,
+    head
   }), [
     page,
+    pages,
     dir,
     app,
     blocks,
@@ -103,11 +94,13 @@ export const BlockProvider = ({ app, children, router }) => {
     toggleEdit,
     changeVariant,
     updateTheme,
+    updateUITheme,
     setPage,
     fonts,
     addFont,
     removeFont,
     metas,
+    head
   ])
 
   return (

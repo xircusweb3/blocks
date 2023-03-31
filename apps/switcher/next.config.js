@@ -6,7 +6,12 @@ const nextConfig = {
     locales: ['en', 'zh'],
     defaultLocale: 'en',
   },    
-  transpilePackages: ["xw3-skins"],    
+  transpilePackages: [
+    '@xircus-web3/skinner', 
+    '@xircus-web3/components',
+    '@xircus-web3/composer',
+    '@xircus-web3/uis'
+  ],
 }
 
 module.exports = nextConfig

@@ -1,0 +1,17 @@
+{
+  "name": "@xircus-web3/uis",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "author": "Xircus",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@chakra-ui/react": "^2.5.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@xircus-web3/react": "^1.0.90",
+    "framer-motion": "^10.10.0",
+    "react-icons": "^4.8.0"
+  }
+}

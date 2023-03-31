@@ -1,20 +1,28 @@
 {
   "name": "@xircus-web3/skinner",
-  "version": "1.0.0",
+  "description": "Xircus Skin Provider",
+  "license": "Apache-2.0",
+  "version": "1.0.4",
   "main": "src/index.js",
   "author": "Xircus",
-  "license": "MIT",
-  "private": true,
+  "scripts": {
+    "build": "esbuild src/index.js --bundle --minify --sourcemap --format=cjs --platform=node --outfile=dist/index.js"
+  },
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@xircus-web3/react": "^1.0.90",
-    "@xircus-web3/sdk": "^1.0.68",
-    "@xircus-web3/skins": "*",
+    "@xircus-web3/react": "^1.0.92",
+    "boring-avatars": "^1.7.0",
+    "dayjs": "^1.11.7",
     "framer-motion": "^10.2.3",
-    "lodash": "^4.17.21",
+    "next": "^13.2.4",
+    "react": "^18.2.0",
     "react-icons": "^4.8.0",
-    "use-intl": "^2.11.0"
+    "use-intl": "^2.11.0",
+    "wil-react-sticky": "^1.0.5"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.14"
   }
 }

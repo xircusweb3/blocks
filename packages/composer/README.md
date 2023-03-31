@@ -1,3 +1,4 @@
-# Xircus Composer
+# @xircus-web3/composer
 
-An opinionated framework of creating pages from different unique and featured packed blocks
+Xircus Web3 Page Block Composer
+

@@ -1,36 +1,37 @@
 import { Box, Button, ButtonGroup, Center, Divider, Heading, HStack, IconButton, Spacer, Stack, Tooltip, useColorModeValue as mode, useDisclosure } from "@chakra-ui/react"
 import { useEffect, useMemo, useState } from "react"
-import { TbArrowDown, TbArrowUp, TbSettings, TbPlus, TbSun, TbTrash, TbChevronsDown, TbChevronsUp, TbSortAscending, TbSortDescending, TbSortDescending2 } from "react-icons/tb"
+import { TbTrash, TbChevronsDown, TbChevronsUp } from "react-icons/tb"
+import { blockDefaults } from "../blocks"
 import { useBlock } from '../hooks/provider'
-import BlockOptions from "./BlockOptions"
+import BlockAddOptions from "./BlockAddOptions"
 import DraggableBlock from "./DraggableBlock"
 
 Array.prototype.move = function(from, to) {
   return this.splice(to, 0, this.splice(from, 1)[0])
 }
 
-const createKey = (length = 10) => (Math.random() + 1).toString(36).substring(length)
+const createKey = (length = 6) => (Math.random() + 1).toString(36).substring(length) + Date.now()
 
-export default function BlockRenderer({ group = 'main', blocks = [], components = {} }) {
-  const { edit, setBlocks, page } = useBlock()
+export default function BlockRenderer({ group = 'main', blocks = [], label, components = {} }) {
+  const { edit, setPageBlocks, setBlocks, page } = useBlock()
   const [items, setItems] = useState(blocks)
   const [history, setHistory] = useState([])
   const [counter, setCounter] = useState(0)
 
-  useEffect(() => {
-    setItems(blocks)
-  }, [page])
-
-  // useEffect(() => {
-  //   if (!edit) {
-  //     setBlocks(group, items)
-  //   }
-  // }, [edit])
+  const updateAndPushBlocks = () => {
+    console.log("UPDATING APP LAYOUT AND BLOCKS")
+    if (group == 'main') {
+      setPageBlocks(page, items)
+    } else {
+      setBlocks(group, items)
+    }
+  }
 
   const updateAndPushHistory = () => {
     history.push(items)
     setHistory(history)
     setCounter(counter + 1)
+    updateAndPushBlocks()
   }
 
   const onMoveUp = (blockIndex) => {
@@ -75,7 +76,10 @@ export default function BlockRenderer({ group = 'main', blocks = [], components 
   const renderBlocks = useMemo(() => {
     if (edit) {
       return items.map((block, blockIndex) => {
+        if (block == null) { return null }
+
         const BlockComponent = components[block.name]
+        
         return BlockComponent ? 
           <DraggableBlock key={block.key} blockIndex={blockIndex} onUp={onMoveUp} onDown={onMoveDown}>
             <Box borderStyle="dashed" borderWidth={1}>
@@ -99,6 +103,9 @@ export default function BlockRenderer({ group = 'main', blocks = [], components 
     }
 
     return items.map((block, blockIndex) => {
+      // console.log("BLOCK ", block)
+      if (block == null) { return null }
+
       const BlockComponent = components[block.name]
       return BlockComponent
         ? <BlockComponent
@@ -112,8 +119,17 @@ export default function BlockRenderer({ group = 'main', blocks = [], components 
 
   return (
     <>
-      <BlockOptions />
       {renderBlocks}
+      {
+        edit && <BlockAddOptions
+                  components={components}
+                  blockDefaults={blockDefaults}
+                  group="main"
+                  onAdd={onAdd}
+                  page={page}
+                  label={label}
+                  />
+      }
     </>
   )
 }

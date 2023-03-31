@@ -1,25 +1,25 @@
 {
-  "name": "designer",
-  "version": "0.1.0",
+  "name": "router",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --port 4400",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -rf .next"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.5.1",
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
-    "framer-motion": "^10.2.4",
+    "@xircus-web3/graph": "^1.0.29",
+    "@xircus-web3/sdk": "^1.0.76",
+    "@xircus-web3/skinner": "*",
+    "@xircus-web3/composer": "*",
+    "graphql": "^16.6.0",
+    "graphql-yoga": "^3.8.0",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "use-intl": "^2.11.0",
-    "@xircus-web3/skinner": "*",
-    "@xircus-web3/blocks": "*",
-    "@xircus-web3/composer": "*"
+    "redis": "^4.6.5"
   },
   "devDependencies": {
     "eslint": "8.36.0",

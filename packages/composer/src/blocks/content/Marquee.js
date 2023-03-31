@@ -2,14 +2,15 @@ import { useMemo, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Box, Container, HStack, Text, Textarea, useDimensions } from "@chakra-ui/react"
 import { useBlockItem } from "../../hooks/provider"
-import { OutlineCard } from '../../components/Card'
+import { OutlineCard } from '../../components/CustomCard'
 import ThemePopEditor from '../../editor/ThemePopEditor'
 
 export const MarqueeDefault = {
   name: 'Marquee',
+  group: 'main',
   theme: {
     wrap: { bgGradient: 'linear(to-l, #7928CA, #FF0080)', py: 2 },
-    container: { w: 'full', maxW: 'full', bg: 'transparent' },
+    container: { maxW: 'container.lg', bg: 'transparent' },
     text: { fontSize: '1em', fontWeight: 'bold', color: 'white', fontFamily: 'Space Grotesk' }    
   },
   data: {
@@ -23,7 +24,6 @@ const transition = {
   duration: 20,
   ease: 'linear'
 }
-
 
 export const Marquee = props => {
   const { data, theme, getEditorActions, handleInput } = useBlockItem(props)

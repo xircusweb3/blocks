@@ -6,7 +6,21 @@ import { AppTabLayout } from "../layout/AppTabLayout";
 import { SlideLayout } from "../layout/SlideLayout";
 
 export const LayoutManager = () => {
-  const { layout } = useBlock()
+  const { layout, head: Head, fonts, metas, app } = useBlock()
+
+  const renderHead = useMemo(() => {
+    return (
+      <Head>
+        <title>{app.name}</title>
+        {
+          (Array.isArray(fonts) ? fonts : []).map(font => <link key={font.name} href={font.url} rel="stylesheet" />)
+        }
+        {
+          (Array.isArray(metas) ? metas : []).map(meta => <meta key={meta.name} property={meta.name} content={meta.content} />)
+        }
+      </Head>      
+    )
+  }, [Head, fonts, metas, app])
 
   const renderLayout = useMemo(() => {
     switch(layout.variant) {
@@ -17,5 +31,10 @@ export const LayoutManager = () => {
     }
   }, [layout.variant])
   
-  return renderLayout
+  return (
+    <>
+      {renderHead}
+      {renderLayout}
+    </>
+  )
 }

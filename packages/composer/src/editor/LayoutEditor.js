@@ -32,9 +32,11 @@ const VariantSelector = ({ ...rest }) => {
     </OutlineCard>
   )
 }
-export const LayoutEditor = () => {
+
+
+export const LayoutEditor = ({ onSave }) => {
   const { toggleColorMode, colorMode } = useColorMode()
-  const { layout, edit, toggleEdit, page, setPage } = useBlock()
+  const { layout, edit, toggleEdit, page, pages, setPage } = useBlock()
   const [modal, setModal] = useState({ locale: false, variant: false })
   const [panel, setPanel] = useState({ variants: false })
   const [mini, setMini] = useState(false)

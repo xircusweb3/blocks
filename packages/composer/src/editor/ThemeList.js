@@ -1,5 +1,5 @@
 import { Accordion, useColorModeValue as mode } from "@chakra-ui/react";
-import { OutlineCard } from "../components/Card";
+import { OutlineCard } from "../components/CustomCard";
 import { ThemeItem } from "./ThemeItem";
 import { ThemeItemPanel } from "./ThemeItemPanel";
 

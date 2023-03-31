@@ -7,7 +7,7 @@ import {
   useColorModeValue as mode
 } from "@chakra-ui/react";
 import { TbEdit } from 'react-icons/tb';
-import { OutlineCard } from '../components/Card';
+import { OutlineCard } from '../components/CustomCard';
 import { ThemeItemPanel } from './ThemeItemPanel';
 import { ThemeItem } from './ThemeItem';
 import { useBlock } from '../hooks/provider';

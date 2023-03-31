@@ -1,108 +1,77 @@
-import { SkinProvider } from '@xircus-web3/skinner'
-import { BlockProvider, LayoutManager, HeadManager } from '@xircus-web3/composer'
-import { useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Head from 'next/head'
-import { Box } from '@chakra-ui/react'
-import dynamic from 'next/dynamic'
+import { SkinProvider } from '@xircus-web3/skinner'
+import { BlockProvider, LayoutManager, LayoutEditor } from '@xircus-web3/composer'
+import { APP_STATE } from '../constants'
 
 // export function reportWebVitals(metric) {
 //   console.log(metric)
 // }
 
-const APP_STATE = {
-  name: 'Shiba',
-  url: 'shiba',
-  scaffold: 'block',
-  theme: {
-    config: {
-      initialColorMode: 'dark',
-      useSystemColorMode: false      
-    },
-  },
-  pages: {
-    '/': [
-      { key: 'mid1', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'Xircus made this marquee text customizable so you can always broadcase your message to your users' } },
-      { key: 'mid2', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'Second Block' } },      
-    ],
-    '/test': [
-      { key: 'midx', name: 'Marquee', theme: { wrap: { w: 'full' } }, data: { text: 'Test Block' } },
-    ],
-  },
-  layout: {
-    variant: 'AppLayout',
-    theme: {
-      wrap: {},
-      header: {},
-      main: {},
-      footer: {},
-      left: {},
-      right: {}
-    },
-    header: [],
-    footer: [],
-    left: [],
-    right: [],
-    guard: [],
-    main: [],
-    isGuarded: false,
-  },
-  locales: {
-    en: { '/': { welcome: 'Welcome' } },
-    zh: { '/': { welcome: '欢迎' } },
-    ar: { '/': { welcome: 'مرحباً' } }
-  },
-  fonts: [
-    { name: 'Montserrat', url: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;500;700&display=swap' },
-    { name: 'Roboto', url: 'https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500;700&display=swap' },   
-    { name: 'Poppins', url: 'https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;500;700&display=swap' },
-    { name: 'Rubik', url: 'https://fonts.googleapis.com/css2?family=Rubik:wght@100;300;500;700&display=swap' },
-    { name: 'Ubuntu', url: 'https://fonts.googleapis.com/css2?family=Ubuntu:wght@100;300;500;700&display=swap' },
-    { name: 'Exo 2', url: 'https://fonts.googleapis.com/css2?family=Exo+2:wght@100;300;500;700&display=swap' },
-    { name: 'Space Grotesk', url: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@100;300;500;700&display=swap' }    
-  ],
-  metas: [
-    { name: 'title', content: '' },
-    { name: 'description', content: '' },    
-    { name: 'og:title', content: '' },
-    { name: 'og:type', content: '' },
-    { name: 'og:url', content: '' },
-    { name: 'og:description', content: '' },
-    { name: 'og:image', content: '' },    
-  ],
-}
-
-function MyApp({ pageProps, router }) {
-  const [app, setApp] = useState(APP_STATE)
-  const scaffold = router.query.scaffold || 'skin'
-  // Switch between block editor or skiner
+function AppDesigner({ Component, pageProps, router }) {
+  const [ready, setReady] = useState()
+  const [data, setData] = useState(false)
+  const app = useMemo(() => data?.app || APP_STATE, [data])  
+  const scaffold = useMemo(() => data?.app?.scaffold || 'none', [data])
+  const skin = useMemo(() => data?.app?.skin ? data?.app?.skin : 'MarketGeneral', [data])
   
+  useEffect(() => {
+    setReady(true)
+  }, [])
+
+  useEffect(() => {
+    if (ready && global?.window) {
+      console.log("WINDOW LOADED")
+      if (window.location.hostname) {
+        loadApp()
+      }
+    }
+  }, [ready])  
+
+  const loadApp = async() => {
+    const reply = await fetch(window.location.origin + '/api/')
+    const res = await reply.json()
+
+    if (res.app) {
+      setData(res)
+      setReady(true)
+    }
+  }
+
   switch(scaffold) {
     case 'block':
       return (
         <BlockProvider
-          app={app}
+          app={
+            router.route == '/editor' 
+            ? { ...app, pages: app.draftPages }
+            : app
+          }
           head={Head}
           router={router}>
-          <HeadManager Head={Head} />
-          <LayoutManager />
+          {
+            router.route == '/editor'
+            ? <LayoutEditor /> 
+            : <LayoutManager />
+          }
         </BlockProvider>
       )
     case 'skin': 
       return (
         <SkinProvider 
           pageProps={pageProps}
-          skin="MarketGeneral"
-          loader={dynamic}
+          skin={skin}
           router={router}
           app={app}
+          data={data}
           head={Head}
           />
       )
     default: 
       return (
-        <Box>Unknown Scaffold</Box>
+        <Component {...pageProps} />
       )
   }
 }
 
-export default MyApp
+export default AppDesigner

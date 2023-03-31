@@ -1,19 +1,17 @@
 {
   "name": "@xircus-web3/composer",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "main": "src/index.js",
-  "license": "Apache 2.0",
+  "license": "MIT",
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@walletconnect/ethereum-provider": "1.8.0",
-    "@xircus-web3/react": "^1.0.90",
-    "@xircus-web3/sdk": "^1.0.69",
+    "@xircus-web3/react": "^1.0.92",
     "framer-motion": "^10.2.3",
-    "glob": "^9.3.0",
-    "lodash": "^4.17.21",
     "react-icons": "^4.8.0",
+    "react-markdown": "^8.0.6",
     "use-intl": "^2.11.0"
   }
 }
