@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import Head from 'next/head'
 import { SkinProvider } from '@xircus-web3/skinner'
-import { BlockProvider, LayoutManager, LayoutEditor } from '@xircus-web3/composer'
+import { BlockProvider, LayoutManager, LayoutEditor, GradientLoader, XircusLoader } from '@xircus-web3/composer'
 import { APP_STATE } from '../constants'
 
 // export function reportWebVitals(metric) {
@@ -68,9 +68,11 @@ function AppDesigner({ Component, pageProps, router }) {
           />
       )
     default: 
-      return (
-        <Component {...pageProps} />
-      )
+      return <XircusLoader />
+
+      // return (
+      //   <Component {...pageProps} />
+      // )
   }
 }
 

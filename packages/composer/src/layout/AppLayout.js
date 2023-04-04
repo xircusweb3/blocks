@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Box, Grid, Stack } from "@chakra-ui/react"
 import { useBlock } from "../hooks/provider"
 import BlockRenderer from "../renderer/BlockRenderer"
-import { headerBlocks, mainBlocks, sideBlocks } from "../blocks"
+import { footerBlocks, headerBlocks, mainBlocks, sideBlocks } from "../blocks"
 
 export const AppLayoutDefault = {
   name: 'AppLayout',
@@ -64,21 +64,21 @@ export const AppLayout = () => {
         />
       </Box>
     )
-  }, [blocks, page, edit])
+  }, [blocks, page, theme])
 
   const renderFooter = useMemo(() => {
     return (
-      <Box {...theme.header}>
+      <Box {...theme.footer}>
         <BlockRenderer
           group="footer"
           label="Add Footer Blocks"
           page={page}
           blocks={layout?.footer || []}
-          components={mainBlocks}
+          components={footerBlocks}
         />
       </Box>
     )
-  }, [layout])
+  }, [layout, page, theme])
 
   return (
     <Box {...theme?.wrap}>

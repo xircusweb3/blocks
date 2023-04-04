@@ -18,6 +18,10 @@ export default function BlockRenderer({ group = 'main', blocks = [], label, comp
   const [history, setHistory] = useState([])
   const [counter, setCounter] = useState(0)
 
+  useEffect(() => {
+    setItems(blocks)
+  }, [page])
+
   const updateAndPushBlocks = () => {
     console.log("UPDATING APP LAYOUT AND BLOCKS")
     if (group == 'main') {

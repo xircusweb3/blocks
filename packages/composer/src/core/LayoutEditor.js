@@ -13,6 +13,9 @@ import { RightDrawer } from '../components/Drawer';
 import { OutlineCard } from '../components/CustomCard';
 import ThemeList from '../editor/ThemeList';
 import { LAYOUT_VARIANTS } from '../constants/urls';
+import FontsManager from '../renderer/FontsManager';
+import MetasManager from '../renderer/MetasManager';
+import PagesManager from '../renderer/PagesManager';
 
 const VariantSelector = ({ ...rest }) => {
   const { changeVariant, layout } = useBlock()
@@ -88,13 +91,19 @@ export const LayoutEditor = () => {
     return (
       <Fragment>
         <RightDrawer 
+          header="Site"
+          size="sm"
+          isOpen={modal.site}
+          onClose={() => handleClose('site')}>
+          <FontsManager />
+          <MetasManager />
+        </RightDrawer>        
+        <RightDrawer 
           header="Layout And Pages"
           size="sm" 
           isOpen={modal.variant} onClose={() => handleClose('variant')}>
-          <VariantSelector />        
-          <OutlineCard title="Page" mb={4}>
-
-          </OutlineCard>
+          <VariantSelector />       
+          <PagesManager /> 
           <ThemeList theme={layout.theme} updateTheme={updateTheme} />
         </RightDrawer>
       </Fragment>
@@ -102,7 +111,7 @@ export const LayoutEditor = () => {
   }, [modal, layout, handleClose, updateTheme])
 
   // <IconButton onClick={handlePublish} isLoading={updating} size="xs" icon={<TbCloudDataConnection />} />             
-  // <IconButton onClick={() => handleOpen('site')} size="xs" icon={<TbSitemap />} />
+  // 
   // <IconButton onClick={() => handleOpen('locale')} size="xs" icon={<TbLanguage />} />
 
   const renderEditorControl = useMemo(() => {
@@ -110,11 +119,12 @@ export const LayoutEditor = () => {
       <Box pos="fixed" bottom={4} left={4} backdropFilter="blur(20px)" p={4} rounded="md" zIndex={99999}>
         <HStack spacing={1} mb={1}>
           {
-            edit 
-            ? <IconButton size="xs" onClick={handleOk} icon={<TbCheck />} />
-            : <IconButton size="xs" onClick={toggleEdit} icon={<TbEdit />} /> 
+            edit
+            ? <IconButton size="xs" onClick={handleOk} isLoading={updating} icon={<TbCheck />} />
+            : <IconButton size="xs" onClick={toggleEdit} icon={<TbEdit />} />
           }
           <IconButton onClick={() => handleOpen('variant')} size="xs" icon={<TbApps />} />          
+          <IconButton onClick={() => handleOpen('site')} size="xs" icon={<TbSitemap />} />
           <IconButton onClick={handleSave} isLoading={updating} size="xs" icon={<TbCloudUpload />} />   
           {layout.variant}
         </HStack>

@@ -3,6 +3,7 @@ import { Grid, Box, Container, Heading, Center, Image, Textarea } from '@chakra-
 import { useBlockItem } from "../../hooks/provider"
 import { OutlineCard } from '../../components/CustomCard'
 import ThemePopEditor from '../../editor/ThemePopEditor'
+import { CustomSwitch } from '../../components/CustomSwitch'
 
 export const HeroDefault = {
   name: 'Hero',

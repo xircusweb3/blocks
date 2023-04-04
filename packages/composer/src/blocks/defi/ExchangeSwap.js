@@ -5,20 +5,20 @@ import { OutlineCard } from '../../components/CustomCard'
 import ThemeEditor from '../../editor/ThemeEditor'
 import { FormInput } from '../../components/CustomInput'
 
-export const MarketListingDefaults = {
-  name: 'MarketListing',
+export const ExchangeSwapDefaults = {
+  name: 'ExchangeSwap',
   group: 'main',
   theme: {
     wrap: {},
     container: { maxW: 'container.md' }
   },
   data: {
-    marketAddress: '',
-    chain: '' 
+    inAddress: '',
+    outAddress: ''
   }
 }
 
-export const MarketListing = props => {
+export const ExchangeSwap = props => {
   const { edit } = useBlock()
   const { data, theme, getEditorActions, handleInput } = useBlockItem(props)
 
@@ -35,11 +35,7 @@ export const MarketListing = props => {
     <>
       <ThemeEditor {...getEditorActions}>
         <OutlineCard title="Content" mb={4}>
-          <FormInput 
-            label="Market Contract Address"
-            value={data?.marketAddress}
-            control={{ mb: 4 }}
-            />
+
         </OutlineCard>
       </ThemeEditor>
       {renderContent}

@@ -27,6 +27,19 @@ const DEFAULT_THEME = {
 
 const EDITOR_PAGE = '/editor'
 
+const getActualPage = (router) => {
+  if (router.route == EDITOR_PAGE) {
+    return router?.query?.page
+  }
+  const match = router.route.match(/^\/\[(\w+)\]$/)
+  if (match) {
+    const page = router.query[match[1]]
+    console.log("MATCHED", page)
+    return `/${page}`
+  }
+  return router?.route
+}
+
 export const BlockProvider = ({ app, children, head, router }) => {
   const [chain, setChain] = useState(1)
   const [locale, setLocale] = useState(router?.query?.locale || router.locale)
@@ -36,10 +49,15 @@ export const BlockProvider = ({ app, children, head, router }) => {
   const [metas, setMetas] = useState(app?.metas || [])
   const [theme, setTheme] = useState(DEFAULT_THEME)
   const [edit, setEdit] = useState(false)
-  const [page, setPage] = useState(router.route == EDITOR_PAGE ? router?.query?.page : router.route)
+  // const [page, setPage] = useState(router.route == EDITOR_PAGE ? router?.query?.page : router.route)
+  // const [page, setPage] = useState(getActualPage(router))
+  // const blocks = useMemo(() => pages[page], [page, pages, app, router.route])
+
   const [pages, setPages] = useState(app?.pages || {})
+  const page = getActualPage(router)
   const themer = extendTheme(theme)
-  const blocks = useMemo(() => pages[page], [page, pages, app])
+  const blocks = pages[page]
+
   const messages = locales[locale] || {}
   const dir = locale == 'ar' ? 'rtl' : 'ltr'
 
@@ -48,6 +66,7 @@ export const BlockProvider = ({ app, children, head, router }) => {
   const updateUITheme = (newTheme) => setTheme({ ...theme, ...newTheme })
   const toggleEdit = () => setEdit(!edit)
 
+  console.log("ROUTER", page, blocks)
 
   const changeVariant = (variant) => setLayout({ ...layout, variant })
   const updateTheme = (name, themeConfig) => setLayout({ ...layout, theme: { ...layout?.theme, [name]: themeConfig } })
@@ -76,7 +95,6 @@ export const BlockProvider = ({ app, children, head, router }) => {
     changeVariant,
     updateTheme,
     updateUITheme,
-    setPage,
     fonts,
     addFont,
     removeFont,
@@ -95,7 +113,6 @@ export const BlockProvider = ({ app, children, head, router }) => {
     changeVariant,
     updateTheme,
     updateUITheme,
-    setPage,
     fonts,
     addFont,
     removeFont,

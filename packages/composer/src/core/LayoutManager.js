@@ -6,7 +6,7 @@ import { AppTabLayout } from "../layout/AppTabLayout";
 import { SlideLayout } from "../layout/SlideLayout";
 
 export const LayoutManager = () => {
-  const { layout, head: Head, fonts, metas, app } = useBlock()
+  const { layout, head: Head, fonts, page, metas, app } = useBlock()
 
   const renderHead = useMemo(() => {
     return (
@@ -21,7 +21,7 @@ export const LayoutManager = () => {
       </Head>      
     )
   }, [Head, fonts, metas, app])
-
+  
   const renderLayout = useMemo(() => {
     switch(layout.variant) {
       case 'StackLayout': return <StackLayout /> // stack
@@ -29,7 +29,7 @@ export const LayoutManager = () => {
       case 'AppTabLayout': return <AppTabLayout /> // with tabs
       case 'SlideLayout': return <SlideLayout /> // full width
     }
-  }, [layout.variant])
+  }, [layout.variant, page])
   
   return (
     <>

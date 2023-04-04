@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Box } from "@chakra-ui/react"
 import { useBlock } from "../hooks/provider"
 import BlockRenderer from "../renderer/BlockRenderer"
-import { headerBlocks, mainBlocks } from "../blocks"
+import { footerBlocks, headerBlocks, mainBlocks } from "../blocks"
 
 export const StackLayoutDefault = {
   name: 'StackLayout',
@@ -33,21 +33,15 @@ export const StackLayout = () => {
         />
       </Box>
     )
-  }, [layout])
+  }, [layout, page, theme])
 
-  const renderMain = useMemo(() => {
-    return (
-      <Box {...theme?.main}>
-        <BlockRenderer
-          group="main"
-          label="Add Blocks"
-          page={page}
-          blocks={blocks || []}
-          components={mainBlocks}
-        />
-      </Box>
-    )
-  }, [blocks, page, edit])
+  // console.log("BLOCKS MAIN", blocks)
+
+  // const renderMain = useMemo(() => {
+  //   return (
+
+  //   )
+  // }, [blocks, page, edit])
 
   const renderFooter = useMemo(() => {
     return (
@@ -57,17 +51,27 @@ export const StackLayout = () => {
           label="Add Footer Blocks"
           page={page}
           blocks={layout?.footer || []}
-          components={mainBlocks}
+          components={footerBlocks}
         />
       </Box>
     )
-  }, [layout])
+  }, [layout, page, theme])
 
   return (
     <Box {...theme?.wrap}>
       {renderHeader}
-      {renderMain}
+      <Box {...theme?.main}>
+        <BlockRenderer
+          group="main"
+          label="Add Blocks"
+          page={page}
+          blocks={blocks || []}
+          components={mainBlocks}
+        />
+      </Box>
       {renderFooter}
     </Box>
   )
 }
+
+// {renderMain}

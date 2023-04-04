@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Box, Button, IconButton, useDisclosure, Center } from "@chakra-ui/react";
+import { Box, Button, IconButton, useDisclosure, Center, Wrap } from "@chakra-ui/react";
 import { useBlock } from '../hooks/provider';
 import { TbPlus } from 'react-icons/tb';
 import { CustomModal } from '../components/CustomModal';
@@ -14,12 +14,12 @@ export default function BlockAddOptions({ components, label, blockDefaults, onAd
 
   const renderOptions = useMemo(() => {
     return (
-      <CustomModal title="Select Block" isOpen={isOpen} onClose={onClose}>
-        <Box>
+      <CustomModal title="Select Block" size="lg" isOpen={isOpen} onClose={onClose}>
+        <Wrap gap={4} my={4}>
           {
             Object.keys(components).map((name) => <Button key={name} onClick={() => handleAddBlock(name)}>{name}</Button>)
           }
-        </Box>
+        </Wrap>
       </CustomModal>
     )
   }, [components, isOpen, onClose, handleAddBlock])

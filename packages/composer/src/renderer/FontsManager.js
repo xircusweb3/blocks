@@ -1,6 +1,7 @@
 import { Box, HStack, IconButton, Spacer, Text } from "@chakra-ui/react";
 import { TbExternalLink, TbTrash } from "react-icons/tb";
-import { OutlineCard } from "../components/Card";
+import { OutlineCard } from "../components/CustomCard";
+import { NameValueForm } from "../components/Form";
 import { useBlock } from "../hooks/provider";
 
 export default function FontsManager() {
@@ -9,7 +10,7 @@ export default function FontsManager() {
   return (
     <OutlineCard title="Fonts" my={2}>
       {
-        fonts.map((font, fontKey) => (
+        (Array.isArray(fonts) ? fonts : []).map((font, fontKey) => (
           <HStack key={fontKey}>
             <Text fontFamily={font.name} fontWeight="bold">{font.name}</Text>
             <Spacer />
@@ -18,6 +19,9 @@ export default function FontsManager() {
           </HStack>
         ))
       }
+      <Box mt={4}>
+        <NameValueForm />
+      </Box>
     </OutlineCard>
   )
 }
